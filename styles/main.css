@@ -1,0 +1,21 @@
+@font-face{
+    font-family: titleFont;
+    src:url(../fonts/Age-Normal.ttf);
+}
+
+@font-face{
+    font-family: boldVerdanaFont;
+    src:url(../fonts/VerdanaBold.ttf);
+}
+
+
+body{
+    margin:0px;
+    padding: 0px;
+    font-family: boldVerdanaFont;
+}
+
+p,a,a:visited,a:active{
+    text-decoration: none;
+    color: white;
+  }
