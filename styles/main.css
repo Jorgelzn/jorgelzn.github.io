@@ -1,22 +1,76 @@
+
 @font-face{
-    font-family: titleFont;
-    src:url(../fonts/Age-Normal.ttf);
+    font-family: smooth;
+    src:url(../fonts/Baloo_Tammudu_2/BalooTammudu2-Regular.ttf);
 }
 
 @font-face{
-    font-family: boldVerdanaFont;
-    src:url(../fonts/VerdanaBold.ttf);
+    font-family: thin;
+    src:url(../fonts/Montserrat/Montserrat-Thin.ttf);
 }
-
 
 body{
     margin:0px;
-    padding: 0px;
     font-family: 'Poppins', sans-serif;
     text-align: center;
 }
 
-p,a,a:visited,a:active{
+a,a:visited,a:active{
     text-decoration: none;
-    color: black;
+    color: inherit;
   }
+
+.icon{
+    filter: brightness(0) invert(1);
+}
+
+
+#title-bg{
+    background-image: url(../images/background.jpg);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 600px;
+}
+
+#title-box{
+    backdrop-filter: blur(10px);
+    font-size: 30px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    width: 60%;
+    max-width: 700px;
+    border: 2px solid white;
+}
+
+#title-box h1{
+    font-family: thin;
+}
+
+#title-box p{
+    font-family: smooth;
+    margin-top: -10px;
+}
+
+#logo{
+    width: 120px;
+    margin-top: -50px;
+}
+
+@media (max-width:1000px){
+
+    #title-box{
+        font-size: 20px;
+    }
+
+    #logo{
+        width: 90px;
+        margin-top: -30px;
+    }
+}
