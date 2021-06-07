@@ -107,7 +107,6 @@ a,a:visited,a:active{
     display:flex;
     align-items:center;
     justify-content:center;
-    cursor: pointer;
 }
 
 .gallery-text{
@@ -167,6 +166,7 @@ a,a:visited,a:active{
     overflow: hidden;
     display: flex;
     align-items: center;
+    font-size: 20px;
 }
 
 .cover{
@@ -204,8 +204,13 @@ a,a:visited,a:active{
     width: 50%;
 }
 
+
 .banner-text{
     width: 80%;
+}
+
+.video-banner img{
+    width: 50%;
 }
 
 #galaga{
@@ -215,7 +220,30 @@ a,a:visited,a:active{
 
 
 footer{
-    height: 50px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer img{
+    width: 80px;
+    transition: all 0.5s;
+}
+
+footer div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+}
+
+footer img:hover{
+    width: 100px;
+}
+
+footer a{
+    width: fit-content;
 }
 
 
@@ -250,6 +278,11 @@ footer{
         width:20px; height: 20px;
     }
 
+    .video-banner img{
+        width: 70%;
+        height: 100%;
+    }
+
 }
 
 @media (max-width:650px){
@@ -258,6 +291,9 @@ footer{
         font-size: 15px;
     }
 
+    .video-banner{
+        font-size: 15px;
+    }
 
     #target-gallery{
         flex-direction: column;
@@ -278,6 +314,18 @@ footer{
 
     .content{
         height: 60%;
+    }
+
+    footer div{
+        width: 50%;
+    }
+
+    footer img{
+        width: 60px;
+    }
+
+    footer img:hover{
+        width: 80px;
     }
 
 }
