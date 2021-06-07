@@ -12,10 +12,11 @@
 body{
     margin:0px;
     padding: 0px;
-    font-family: boldVerdanaFont;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
 }
 
 p,a,a:visited,a:active{
     text-decoration: none;
-    color: white;
+    color: black;
   }
