@@ -214,7 +214,6 @@ a,a:visited,a:active{
 }
 
 #galaga{
-    width: 65%;
     transform: rotate(90deg);
 }
 
@@ -293,6 +292,10 @@ footer a{
 
     .video-banner{
         font-size: 15px;
+    }
+
+    .video-banner video{
+        width: 100%;
     }
 
     #target-gallery{
