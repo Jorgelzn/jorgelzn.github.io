@@ -75,6 +75,7 @@ a,a:visited,a:active{
     align-items: center;
     width: 100%;
     margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .target-gallery-container{
@@ -160,6 +161,58 @@ a,a:visited,a:active{
     width:70%;
     height:70%;
 }
+
+.video-banner{
+    height: 300px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.cover{
+    position: absolute;
+    height: inherit;
+    width: 75%;
+    color: white;
+    font-family: smooth;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+
+.cover p{
+    margin:40px;
+}
+
+.video-banner{
+    justify-content: flex-end;
+}
+
+.cover{
+    left: 0;
+    justify-content: flex-start;
+    background-image: linear-gradient(to right,black,black,black, rgb(0,0,0,0));
+}
+
+.cover-r p{
+    margin-left: 20px;
+}
+
+
+
+.video-banner video{
+    width: 50%;
+}
+
+.banner-text{
+    width: 80%;
+}
+
+#galaga{
+    width: 65%;
+    transform: rotate(90deg);
+}
+
 
 footer{
     height: 50px;

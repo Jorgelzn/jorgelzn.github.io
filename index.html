@@ -23,11 +23,11 @@
 
             <div class="target-gallery-container">
                 <div class="content">
-                    <div class="target">
+                    <a class="target" onclick="show('web')" href="#web-banner">
                         <div class="img-cont">
                             <img src="images/web.png" alt="">
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="gallery-text">
                     <p>Web &nbsp development</p>
@@ -36,11 +36,11 @@
 
             <div class="target-gallery-container">
                 <div class="content">
-                    <div class="target">
+                    <a class="target" onclick="show('ai')" href="#ai-banner">
                         <div class="img-cont">
                             <img src="images/ai.png" alt="">
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="gallery-text">
                     <p>Artificial Intelligence</p>
@@ -49,17 +49,50 @@
 
             <div class="target-gallery-container">
                 <div class="content">
-                    <div class="target">
+                    <a class="target" onclick="show('games')" href="#games-banner">
                         <div class="img-cont">
                             <img src="images/games.png" alt="">
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="gallery-text">
                     <p>Game Development</p>
                 </div>
             </div>
 
+        </div>
+
+        <div class="video-banner video-banner" id="ai-banner">
+            <div class="cover cover">
+                <div class="banner-text">
+                    <p>I have worked in the implementation of automatic agents using machine learning algorithms</p>
+                </div>
+            </div>
+            <video class="video" preload="auto" playsinline="" loop="" muted="" autoplay="">
+                <source src="videos/pacman.mp4" type="video/mp4">
+            </video> 
+        </div>
+
+        <div class="video-banner video-banner" id="games-banner">
+            <div class="cover cover">
+                <div class="banner-text">
+                    <p>I have developed a version of the retro videogame galaga</p>
+                </div>
+            </div>
+            <video  id="galaga" class="video" preload="auto" playsinline="" loop="" muted="" autoplay="">
+                <source src="videos/galaga.mp4" type="video/mp4">
+            </video> 
+        </div>
+
+        <div class="video-banner video-banner" id="web-banner">
+            <div class="cover cover">
+                <div class="banner-text">
+                    <p>web development</p>
+                </div>
+            </div>
+            <video  id="galaga" class="video" preload="auto" playsinline="" loop="" muted="" autoplay="">
+                <source src="videos/galaga.mp4" type="video/mp4">
+            </video> 
         </div>
 
         <footer>
