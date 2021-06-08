@@ -285,6 +285,7 @@ footer a{
 
 @media (max-width:650px){
 
+
     #title-box{
         font-size: 15px;
     }
@@ -304,7 +305,7 @@ footer a{
     }
 
     .target-gallery-container{
-        width: 400px;
+        width:335px;
         flex-direction: row;
     }
 
@@ -312,6 +313,7 @@ footer a{
         justify-content: center;
         align-items: flex-end;
         width: 100%;
+        margin-left: 20px;
     }
 
     .content{
