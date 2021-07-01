@@ -277,7 +277,7 @@ footer a{
     }
 
     #vision{
-        width: 80%;
+        width: 700px;
     }
 
     #web{
@@ -299,8 +299,13 @@ footer a{
         font-size: 15px;
     }
 
+    #pacman{
+        width: 350px;
+    }
+
     #vision{
-        width: 110%;
+        width: 600px;
+        transform: translate(250px,0px);
     }
 
     #web{
