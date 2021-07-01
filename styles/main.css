@@ -208,14 +208,9 @@ a,a:visited,a:active{
     width: 80%;
 }
 
-.video-banner img{
-    width: 50%;
+#web{
+    width:940px;
 }
-
-#galaga{
-    transform: rotate(90deg);
-}
-
 
 footer{
     height: 200px;
@@ -245,7 +240,7 @@ footer a{
 }
 
 
-@media (max-width:1000px){
+@media (max-width:1200px){
 
     #title-box{
         font-size: 20px;
@@ -281,6 +276,16 @@ footer a{
         height: 100%;
     }
 
+    #vision{
+        width: 80%;
+    }
+
+    #web{
+        width: 730px;
+        transform: translate(150px,-10px);
+    }
+
+
 }
 
 @media (max-width:650px){
@@ -294,8 +299,13 @@ footer a{
         font-size: 15px;
     }
 
-    .video-banner video{
-        width: 100%;
+    #vision{
+        width: 110%;
+    }
+
+    #web{
+        width: 650px;
+        transform: translate(300px,-10px);
     }
 
     #target-gallery{
