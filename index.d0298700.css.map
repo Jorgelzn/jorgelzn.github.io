@@ -1,0 +1,1 @@
+{"mappings":"ACCA","sources":["index.d0298700.css","src/style.css"],"sourcesContent":["canvas {\n  position: fixed;\n  top: 0;\n  left: 0;\n}\n\n/*# sourceMappingURL=index.d0298700.css.map */\n","\r\ncanvas{\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n}\r\n"],"names":[],"version":3,"file":"index.d0298700.css.map"}
