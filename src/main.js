@@ -14,9 +14,11 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.setY(15);
+camera.position.setY(20);
 camera.position.setZ(-20);
+camera.position.setX(20);
 camera.rotateY(Math.PI);
+camera.rotateX(-Math.PI/8);
 
 // Lighting
 const dirLight = new THREE.DirectionalLight('#526cff',0.6);
@@ -25,7 +27,7 @@ scene.add(dirLight,ambientLight);
 
 
 //Walls
-const floorGeometry = new THREE.BoxGeometry(50,1,50);
+const floorGeometry = new THREE.BoxGeometry(1000,1,500);
 const floorMaterial = new THREE.MeshStandardMaterial({color: new THREE.Color(0,0.2,0.5)});
 const floor = new THREE.Mesh(floorGeometry,floorMaterial);
 scene.add(floor);
