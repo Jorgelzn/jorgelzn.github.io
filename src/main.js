@@ -48,6 +48,20 @@ scene.add(torus);
 
 //const controls = new OrbitControls(camera,renderer.domElement);
 
+window.addEventListener( 'resize', onWindowResize );
+
+
+function onWindowResize() {
+
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize( window.innerWidth, window.innerHeight );
+
+	//controls.handleResize();
+
+}
+
 // Animation loop
 
 function animate(){
