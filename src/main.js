@@ -15,6 +15,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setY(15);
+camera.position.setZ(-20);
 camera.rotateY(Math.PI);
 
 // Lighting
@@ -24,33 +25,21 @@ scene.add(dirLight,ambientLight);
 
 
 //Walls
-const wallsGeometry = new THREE.BoxGeometry(50,1,50);
-const wallsMaterial = new THREE.MeshStandardMaterial({color: new THREE.Color(0,0.2,0.5)});
-
-const walls = Array(6).fill().map(()=>(new THREE.Mesh(wallsGeometry,wallsMaterial)));
-walls.forEach(function (item, index) {
-    scene.add(item);
-});
-walls[1].rotation.x = Math.PI / 2;
-walls[1].position.z = walls[1].position.z-25;
-walls[2].rotation.z = Math.PI / 2;
-walls[2].position.x = walls[2].position.x-25;
-walls[3].rotation.x = Math.PI / 2;
-walls[3].position.z = walls[3].position.z+25;
-walls[4].rotation.z = Math.PI / 2;
-walls[4].position.x = walls[4].position.x+25;
-walls[5].position.y = walls[5].position.x+25;
+const floorGeometry = new THREE.BoxGeometry(50,1,50);
+const floorMaterial = new THREE.MeshStandardMaterial({color: new THREE.Color(0,0.2,0.5)});
+const floor = new THREE.Mesh(floorGeometry,floorMaterial);
+scene.add(floor);
 
 //Torus shader
-const geometry = new THREE.IcosahedronGeometry(1,5);
+const geometry = new THREE.OctahedronGeometry(5);
 const material = new THREE.RawShaderMaterial({
     vertexShader: vertexShader,
     fragmentShader: fragmentShader
 })
 material.uniforms.uTime = {value:0}
 const torus = new THREE.Mesh(geometry,material);
-torus.position.setY(5)
-torus.position.setZ(20)
+torus.position.setY(10);
+torus.position.setZ(20);
 scene.add(torus);
 
 // Controls
