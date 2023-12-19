@@ -54,6 +54,8 @@ function animate(){
     requestAnimationFrame(animate);
 
     //controls.update();
+    
+    torus.rotateY(0.01);
 
     renderer.render(scene, camera);
     
