@@ -1,8 +1,13 @@
 import './style.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
 import vertexShader from './shaders/vertex.glsl';
 import fragmentShader from './shaders/fragment.glsl';
+const g = require("url:./model.obj")
+const ge = require("url:./materials.mtl")
+
 const scene = new THREE.Scene();
 
 // Camera and renderer
@@ -14,15 +19,15 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.setY(20);
-camera.position.setZ(-20);
-camera.position.setX(20);
-camera.rotateY(Math.PI);
-camera.rotateX(-Math.PI/8);
+camera.position.setY(0);
+camera.position.setZ(30);
+camera.position.setX(0);
+//camera.rotateY(Math.PI);
+//camera.rotateX(-Math.PI/8);
 
 // Lighting
-const dirLight = new THREE.DirectionalLight('#526cff',0.6);
-const ambientLight = new THREE.AmbientLight('#4255ff',0.5);
+const dirLight = new THREE.DirectionalLight('#526cff');
+const ambientLight = new THREE.AmbientLight('#4255ff');
 scene.add(dirLight,ambientLight);
 
 
@@ -30,7 +35,7 @@ scene.add(dirLight,ambientLight);
 const floorGeometry = new THREE.BoxGeometry(1000,1,500);
 const floorMaterial = new THREE.MeshStandardMaterial({color: new THREE.Color(0,0.2,0.5)});
 const floor = new THREE.Mesh(floorGeometry,floorMaterial);
-scene.add(floor);
+//scene.add(floor);
 
 //Torus shader
 const geometry = new THREE.OctahedronGeometry(5);
@@ -40,13 +45,48 @@ const material = new THREE.RawShaderMaterial({
 })
 material.uniforms.uTime = {value:0}
 const torus = new THREE.Mesh(geometry,material);
-torus.position.setY(10);
-torus.position.setZ(20);
+torus.position.setY(0);
+torus.position.setZ(0);
 scene.add(torus);
+
+// LOAD OBJECT
+const mtlLoader = new MTLLoader()
+console.log(g);
+mtlLoader.load(
+    ge,
+    (materials) => {
+        materials.preload()
+        console.log(materials)
+        const objLoader = new OBJLoader()
+        objLoader.setMaterials(materials)
+        objLoader.load(
+        g,
+        (object) => {
+            object.scale.set(10, 10, 10);
+            object.rotateY(-Math.PI/2);
+            scene.add(object)
+        },
+        (xhr) => {
+            console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+        },
+        (error) => {
+            console.log('An error happened')
+        }
+        )
+    },
+    (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+    },
+    (error) => {
+        console.log('An error happened')
+    }
+)
+
+
 
 // Controls
 
-//const controls = new OrbitControls(camera,renderer.domElement);
+const controls = new OrbitControls(camera,renderer.domElement);
 
 window.addEventListener( 'resize', onWindowResize );
 
