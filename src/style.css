@@ -1,3 +1,7 @@
+@font-face {
+    font-family: "main-font";
+    src: url("../static/fonts/Orbitron-Regular.ttf");
+}
 
 canvas{
     position: fixed;
@@ -10,19 +14,19 @@ main {
     color: white;
 }
 
-.main-panel{
-    background-color: rgb(255, 255, 255,0.5);
-    border-radius: 2px;
-    width: 200px;
-    height: 400px;
-    margin-left: 100px;
-    margin-top: 200px;
+.nav-panel{
+    background-color: rgb(45, 85, 112);
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
 }
 
-.main-panel p:hover{
+.nav-panel p:hover{
     color: orange;
+}
+
+.nav-panel p{
+    font-family: "main-font";
 }
