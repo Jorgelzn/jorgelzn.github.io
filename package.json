@@ -10,7 +10,8 @@
   "dependencies": {
     "gh-pages": "^6.1.0",
     "parcel": "^2.10.3",
-    "three": "^0.159.0"
+    "three": "^0.159.0",
+    "@tweenjs/tween.js": "21.0.0"
   },
   "devDependencies": {
     "@parcel/transformer-glsl": "^2.10.3"

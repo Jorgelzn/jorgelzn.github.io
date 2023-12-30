@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
-
+import TWEEN from '@tweenjs/tween.js'
 
 function load_model(model,material){
     const mtlLoader = new MTLLoader()
@@ -21,7 +21,7 @@ function load_model(model,material){
                 container.add(object)
             },
             (xhr) => {
-                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+                //console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
             },
             (error) => {
                 console.log('An error happened')
@@ -29,7 +29,7 @@ function load_model(model,material){
             )
         },
         (xhr) => {
-            console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+            //console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
         },
         (error) => {
             console.log('An error happened')
@@ -50,6 +50,33 @@ function onWindowResize() {
 
 }
 
+window.goArchives = function goArchives(){
+    //camera.position.setY(0);
+    //camera.position.setZ(1);
+    //camera.position.setX(-3);
+    //camera.rotateY(1);
+    //camera.rotateX(-0.2);
+    //camera.rotateZ(0.2);
+
+    new TWEEN.Tween(camera.position)
+        .to({
+            x: -2,
+            y: 0,
+            z: 1,
+        },
+        1000
+        ).easing(TWEEN.Easing.Cubic.Out).start()
+
+    new TWEEN.Tween(camera.rotation)
+        .to({
+            x: 0,
+            y: 1.5,
+            z: 0,
+        },
+        1000
+        ).easing(TWEEN.Easing.Cubic.Out).start()
+}
+
 // Animation loop
 
 function animate(){
@@ -57,7 +84,7 @@ function animate(){
 
     //controls.update();
     torus.rotateY(0.01);
-
+    TWEEN.update()
     renderer.render(scene, camera);
     
 }
