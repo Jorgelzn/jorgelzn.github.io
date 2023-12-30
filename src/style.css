@@ -18,17 +18,23 @@ main {
     background-color: rgb(45, 85, 112);
     display: flex;
     justify-content: space-around;
+    align-items: center;
     position: fixed;
     bottom: 0;
     width: 100vw;
     height: 10vh;
 }
 
-.nav-panel p:hover{
-    color: orange;
+.nav-panel button:hover {
+    color:#68f8d9;
+    text-shadow:1px 1px 10px #68f8d9, 1px 1px 10px #fff;
+    cursor: pointer;
 }
 
-.nav-panel p{
+.nav-panel button{
     font-family: "main-font";
-    font-size: 100%;
+    font-size: 3vh;
+    color: white;
+    background: none;
+    border: none;
 }
