@@ -72,26 +72,26 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
-    controls.update()
-	controls.handleResize();
+    //controls.update()
+	//controls.handleResize();
 
 }
 
-window.goArchives = function goArchives(){
+window.goLocation = function goLocation(location){
     new TWEEN.Tween(camera.position)
         .to({
-            x: 1,
-            y: -1,
-            z: 0,
+            x: location[0],
+            y: location[1],
+            z: location[2],
         },
         1000
         ).easing(TWEEN.Easing.Cubic.Out).start()
 
     new TWEEN.Tween(camera.rotation)
         .to({
-            x: 0,
-            y: -0.3,
-            z: 0,
+            x: location[3],
+            y: location[4],
+            z: location[5],
         },
         1000
         ).easing(TWEEN.Easing.Cubic.Out).start()
@@ -112,7 +112,8 @@ const scene = new THREE.Scene();
 //renderer
 
 const renderer = new THREE.WebGLRenderer({
-    canvas: document.querySelector('#bg')
+    canvas: document.querySelector('#bg'),
+    antialias: true
 })
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
