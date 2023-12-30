@@ -1,11 +1,13 @@
 import './style.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import TWEEN from '@tweenjs/tween.js'
 
-function load_model(model,material){
+
+function load_OBJ(model,material){
     const mtlLoader = new MTLLoader()
     var container = new THREE.Object3D();
     mtlLoader.load(
@@ -38,6 +40,31 @@ function load_model(model,material){
     return container
 }
 
+function load_GLTF(model){
+    // Instantiate a loader
+    const loader = new GLTFLoader();
+    var container = new THREE.Object3D();
+
+    // Load a glTF resource
+    loader.load(
+        // resource URL
+        model,
+        // called when the resource is loaded
+        function ( gltf ) {
+            container.add(gltf.scene);
+        },
+        // called while loading is progressing
+        function ( xhr ) {
+            //console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+        },
+        // called when loading has errors
+        function ( error ) {
+            console.log( 'An error happened' );
+        }
+    );
+    return container
+}
+
 
 function onWindowResize() {
 
@@ -45,24 +72,17 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
-
-	//controls.handleResize();
+    controls.update()
+	controls.handleResize();
 
 }
 
 window.goArchives = function goArchives(){
-    //camera.position.setY(0);
-    //camera.position.setZ(1);
-    //camera.position.setX(-3);
-    //camera.rotateY(1);
-    //camera.rotateX(-0.2);
-    //camera.rotateZ(0.2);
-
     new TWEEN.Tween(camera.position)
         .to({
-            x: -2,
-            y: 0,
-            z: 1,
+            x: 1,
+            y: -1,
+            z: 0,
         },
         1000
         ).easing(TWEEN.Easing.Cubic.Out).start()
@@ -70,7 +90,7 @@ window.goArchives = function goArchives(){
     new TWEEN.Tween(camera.rotation)
         .to({
             x: 0,
-            y: 1.5,
+            y: -0.3,
             z: 0,
         },
         1000
@@ -82,8 +102,6 @@ window.goArchives = function goArchives(){
 function animate(){
     requestAnimationFrame(animate);
 
-    //controls.update();
-    torus.rotateY(0.01);
     TWEEN.update()
     renderer.render(scene, camera);
     
@@ -91,73 +109,27 @@ function animate(){
 
 const scene = new THREE.Scene();
 
-scene.background = new THREE.Color( '#1b65a6' );
+//renderer
 
-// Camera and renderer
-
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,1000);
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#bg')
 })
-
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.setY(5);
-camera.position.setZ(40);
-camera.position.setX(15);
-camera.rotateY(0.5);
-camera.rotateX(-0.2);
-//camera.rotateX(-Math.PI/8);
 
-// Lighting
+//camera
 
-const dirLight1 = new THREE.DirectionalLight(0xFFFFFF,0.5);
-dirLight1.position.setY(20);
-dirLight1.position.setZ(-20);
-dirLight1.position.setX(-20);
-dirLight1.castShadow = true;
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,1000);
+camera.position.setY(0);
+camera.position.setZ(1);
+camera.position.setX(4);
+camera.rotateY(1.2);
 
-const dirLight2 = new THREE.DirectionalLight(0xFFFFFF,0.5);
-dirLight2.position.setY(20);
-dirLight2.position.setZ(-10);
-dirLight2.position.setX(20);
-dirLight2.castShadow = true;
-
-const dirLight3 = new THREE.DirectionalLight(0xFFFFFF,0.5);
-dirLight3.position.setY(20);
-dirLight3.position.setZ(20);
-dirLight3.position.setX(20);
-dirLight3.castShadow = true;
-
-scene.add(dirLight1,dirLight2,dirLight3);
-
-//const dirhelper1 = new THREE.DirectionalLightHelper( dirLight1);
-//const dirhelper2 = new THREE.DirectionalLightHelper( dirLight2);
-//const dirhelper3 = new THREE.DirectionalLightHelper( dirLight3);
-//scene.add( dirhelper1,dirhelper2,dirhelper3);
-
-
-//Torus
-
-const torus = new THREE.Mesh(
-    new THREE.OctahedronGeometry(5),
-    new THREE.MeshBasicMaterial( { color: "#433F81" } )
-);
-torus.position.setY(0);
-torus.position.setZ(0);
-//scene.add(torus);
-
-// LOAD OBJECT
-const room_mod = require("url:../static/models/room.obj");
-const room_mat = require("url:../static/materials/room.mtl");
-var room = load_model(room_mod,room_mat);
-room.scale.set(10, 10, 10);
-room.rotateY(-Math.PI/2);
+// LOAD SCENE
+const room_url = require("url:../static/models/room.glb");
+var room = load_GLTF(room_url);
+room.position.setZ(80);
 scene.add(room);
-
-// Controls
-
-//const controls = new OrbitControls(camera,renderer.domElement);
 
 window.addEventListener( 'resize', onWindowResize );
 
