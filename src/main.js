@@ -121,10 +121,10 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 //camera
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,1000);
-camera.position.setY(0);
-camera.position.setZ(1);
-camera.position.setX(4);
-camera.rotateY(1.2);
+camera.position.setY(-1);
+camera.position.setZ(1.5);
+camera.position.setX(0);
+camera.rotateY(0.3);
 
 // LOAD SCENE
 const room_url = require("url:../static/models/room.glb");
