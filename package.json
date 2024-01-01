@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "source": "src/index.html",
   "scripts": {
-    "server": "parcel",
+    "server": "del /Q dist | parcel",
     "build": "del /Q build | parcel build --public-url ./ --dist-dir build",
     "deploy": "gh-pages -d build"
   },
