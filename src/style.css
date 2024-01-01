@@ -20,8 +20,6 @@ main {
     align-items: center;
     position: fixed;
     right: 2vw;
-    top: 10vh;
-    height: 100vh;
 }
 
 .nav-panel button:hover {

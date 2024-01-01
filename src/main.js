@@ -83,11 +83,12 @@ window.onresize = function onWindowResize() {
     
     var ratio = window.innerWidth/window.innerHeight
     var FOV = 75;
-    if(0.6<ratio && ratio<1){
-        FOV=100;
-    }else if(ratio<0.6){
-        FOV=135;
-    }
+    
+    //if(0.6<ratio && ratio<1){
+        //FOV=75;
+    //}else if(ratio<0.6){
+        //FOV=75;
+    //}
 
 	camera.aspect = ratio;
     camera.fov = FOV
@@ -171,11 +172,12 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 //camera
 var ratio = window.innerWidth/window.innerHeight
 var FOV = 75;
-if(0.6<ratio && ratio<1){
-    FOV=100;
-}else if(ratio<0.6){
-    FOV=135;
-}
+
+//if(0.6<ratio && ratio<1){
+    //FOV=75;
+//}else if(ratio<0.6){
+    //FOV=75;
+//}
 
 const camera = new THREE.PerspectiveCamera(FOV,ratio,0.1,1000);
 camera.position.setY(10);
@@ -185,9 +187,10 @@ camera.position.setX(40);
 
 // LOAD SCENE
 
-var room_url = require("url:../static/models/room.obj");
+var room_url = require("url:../static/models/room.glb");
 var material_url = require("url:../static/materials/room.mtl");
-var room = load_OBJ(room_url,material_url);
+//var room = load_OBJ(room_url,material_url);
+var room = load_GLTF(room_url);
 room.scale.set(10,10,10);
 room.rotateY(-Math.PI/7);
 scene.add(room);
@@ -206,7 +209,7 @@ scene.add( background );
 const pointLight1 = new THREE.PointLight( 0x03fcfc, 60, 5 );
 pointLight1.position.set( -5, -1, -3 );
 pointLight1.castShadow = true;
-pointLight1.shadow.bias=-0.004;
+pointLight1.shadow.bias=-0.04;
 scene.add( pointLight1 )
 
 let d = 150
