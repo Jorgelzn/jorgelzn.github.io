@@ -79,7 +79,7 @@ function load_GLTF(model){
 }
 
 
-function onWindowResize() {
+window.onresize = function onWindowResize() {
     
     var ratio = window.innerWidth/window.innerHeight
     var FOV = 75;
@@ -94,10 +94,35 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
-    controls.update()
+    controls.update();
 	controls.handleResize();
 
 }
+
+
+function doSmoothReset( ){
+    // get current angles
+    var alpha = controls.getAzimuthalAngle()
+    console.log(alpha)
+    
+    // smooth change using manual lerp
+    if(alpha>original_azimuth){
+        controls.minAzimuthAngle = 0.95*alpha;
+        if( alpha - original_azimuth < 0.1 ) alpha = original_azimuth;
+    }else{
+        controls.minAzimuthAngle = 1.05*alpha;
+        if( original_azimuth - alpha < 0.1 ) alpha = original_azimuth;
+    }
+    controls.maxAzimuthAngle = controls.minAzimuthAngle;
+
+    // if the reset values are reached, exit smooth reset
+    if(alpha == original_azimuth){
+        smoothReset=false
+        controls.minAzimuthAngle = original_azimuth_min
+        controls.maxAzimuthAngle = original_azimuth_max
+    }
+}
+
 
 window.goLocation = function goLocation(location){
     new TWEEN.Tween(camera.position)
@@ -120,14 +145,14 @@ window.goLocation = function goLocation(location){
 }
 
 // Animation loop
-
 function animate(){
     requestAnimationFrame(animate);
-
+    if(smoothReset){
+        doSmoothReset()
+    }
+    controls.update();
     TWEEN.update()
     renderer.render(scene, camera);
-    console.log(camera.position)
-    
 }
 
 const scene = new THREE.Scene();
@@ -153,9 +178,9 @@ if(0.6<ratio && ratio<1){
 }
 
 const camera = new THREE.PerspectiveCamera(FOV,ratio,0.1,1000);
-camera.position.setY(7);
-camera.position.setZ(-20);
-camera.position.setX(35);
+camera.position.setY(10);
+camera.position.setZ(10);
+camera.position.setX(40);
 
 
 // LOAD SCENE
@@ -163,8 +188,8 @@ camera.position.setX(35);
 var room_url = require("url:../static/models/room.obj");
 var material_url = require("url:../static/materials/room.mtl");
 var room = load_OBJ(room_url,material_url);
-console.log(room)
 room.scale.set(10,10,10);
+room.rotateY(-Math.PI/7);
 scene.add(room);
 
 var background = new THREE.Mesh(
@@ -179,7 +204,7 @@ scene.add( background );
 //LIGHTNING
 
 const pointLight1 = new THREE.PointLight( 0x03fcfc, 60, 5 );
-pointLight1.position.set( -5, 0, 0 );
+pointLight1.position.set( -5, -1, -3 );
 pointLight1.castShadow = true;
 pointLight1.shadow.bias=-0.004;
 scene.add( pointLight1 )
@@ -224,15 +249,16 @@ scene.add(pointLight1,directionalLight1,directionalLight2,directionalLight3);
 //const lightHelper3 = new THREE.DirectionalLightHelper( directionalLight3 );
 //directionalLight3.add( lightHelper3 );
 
-window.addEventListener( 'resize', onWindowResize );
-
 const controls = new OrbitControls( camera, renderer.domElement );
-controls.maxAzimuthAngle = Math.PI;  
-controls.minAzimuthAngle = Math.PI / 3;
+const original_azimuth_min = Math.PI / 4
+const original_azimuth_max = Math.PI/1.1
+const original_azimuth = controls.getAzimuthalAngle()
+controls.minAzimuthAngle = original_azimuth_min;
+controls.maxAzimuthAngle = original_azimuth_max;  
 controls.minPolarAngle = Math.PI/2.5;
 controls.maxPolarAngle = Math.PI/2.5;
-controls.minDistance = 1;
-controls.maxDistance = 50;
-
-
+controls.rotateSpeed = 0.2;
+controls.enableZoom = false;
+var smoothReset = false;
+controls.addEventListener( 'end', function(){smoothReset=true;} );
 animate()
