@@ -96,7 +96,6 @@ window.onresize = function onWindowResize() {
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
     controls.update();
-	controls.handleResize();
 
 }
 
@@ -104,7 +103,6 @@ window.onresize = function onWindowResize() {
 function doSmoothReset( ){
     // get current angles
     var alpha = controls.getAzimuthalAngle()
-    console.log(alpha)
     
     // smooth change using manual lerp
     if(alpha>original_azimuth){
@@ -126,6 +124,7 @@ function doSmoothReset( ){
 
 
 window.goLocation = function goLocation(location){
+    controls.enableRotate= false;  
     new TWEEN.Tween(camera.position)
         .to({
             x: location[0],
@@ -143,6 +142,19 @@ window.goLocation = function goLocation(location){
         },
         1000
         ).easing(TWEEN.Easing.Cubic.Out).start()
+   
+}
+
+window.goHome = function goHome(){
+    controls.enableRotate= true;  
+    new TWEEN.Tween(camera.position)
+        .to({
+            x: initial_camera_x,
+            y: initial_camera_y,
+            z: initial_camera_z,
+        },
+        1000
+        ).easing(TWEEN.Easing.Cubic.Out).start()
 }
 
 // Animation loop
@@ -151,8 +163,10 @@ function animate(){
     if(smoothReset){
         doSmoothReset()
     }
-    controls.update();
     TWEEN.update()
+    if(controls.enableRotate){
+        controls.update();
+    }
     renderer.render(scene, camera);
 }
 
@@ -180,9 +194,12 @@ var FOV = 75;
 //}
 
 const camera = new THREE.PerspectiveCamera(FOV,ratio,0.1,1000);
-camera.position.setY(10);
-camera.position.setZ(10);
-camera.position.setX(40);
+const initial_camera_x = 40;
+const initial_camera_y = 10;
+const initial_camera_z = 10;
+camera.position.setX(initial_camera_x);
+camera.position.setY(initial_camera_y);
+camera.position.setZ(initial_camera_z);
 
 
 // LOAD SCENE
@@ -262,6 +279,10 @@ controls.minPolarAngle = Math.PI/2.5;
 controls.maxPolarAngle = Math.PI/2.5;
 controls.rotateSpeed = 0.2;
 controls.enableZoom = false;
+controls.enablePan = false;
+controls.enableRotate= true;  
 var smoothReset = false;
 controls.addEventListener( 'end', function(){smoothReset=true;} );
+
+
 animate()
