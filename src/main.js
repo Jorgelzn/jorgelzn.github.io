@@ -84,13 +84,14 @@ window.onresize = function onWindowResize() {
     var ratio = window.innerWidth/window.innerHeight
     FOV = 75
     if(ratio<1){
-        FOV = 75*(ratio*1.8);
+        FOV = 100;
     }
+
     console.log(FOV)
 	camera.aspect = ratio;
     camera.fov = FOV
 	camera.updateProjectionMatrix();
-
+    goHome()
 	renderer.setSize( window.innerWidth, window.innerHeight );
     controls.update();
 
@@ -143,9 +144,9 @@ window.goHome = function goHome(){
     controls.enableRotate= true;  
     new TWEEN.Tween(camera.position)
         .to({
-            x: initial_camera_x,
-            y: initial_camera_y,
-            z: initial_camera_z,
+            x: 6,
+            y: 6,
+            z: 6,
         },
         1000
         ).easing(TWEEN.Easing.Cubic.Out).start()
@@ -183,28 +184,22 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 //camera
 var ratio = window.innerWidth/window.innerHeight
 var FOV = 75
-
 if(ratio<1){
-    FOV = 75*(ratio*1.8);
+    FOV = 100;
 }
 
 console.log(FOV)
 
 const camera = new THREE.PerspectiveCamera(FOV,ratio,0.1,1000);
-const initial_camera_x = 8;
-const initial_camera_y = 5;
-const initial_camera_z = 8;
-camera.position.setX(initial_camera_x);
-camera.position.setY(initial_camera_y);
-camera.position.setZ(initial_camera_z);
+camera.position.setX(6);
+camera.position.setY(6);
+camera.position.setZ(6);
 
 
 // LOAD SCENE
 
 var room_url = require("url:../static/models/room.glb");
-//var room = load_OBJ(room_url,material_url);
 var room = load_GLTF(room_url);
-//room.scale.set(2,2,2);
 room.rotateY(1.5);
 room.position.setY(-3);
 scene.add(room);
