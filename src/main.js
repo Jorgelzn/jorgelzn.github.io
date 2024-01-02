@@ -100,13 +100,12 @@ window.onresize = function onWindowResize() {
 function doSmoothReset( ){
     // get current angles
     var alpha = controls.getAzimuthalAngle()
-    
     // smooth change using manual lerp
     if(alpha>original_azimuth){
-        controls.minAzimuthAngle = 0.95*alpha;
+        controls.minAzimuthAngle = alpha-0.1;
         if( alpha - original_azimuth < 0.1 ) alpha = original_azimuth;
     }else{
-        controls.minAzimuthAngle = 1.05*alpha;
+        controls.minAzimuthAngle = alpha+0.1;
         if( original_azimuth - alpha < 0.1 ) alpha = original_azimuth;
     }
     controls.maxAzimuthAngle = controls.minAzimuthAngle;
@@ -114,8 +113,6 @@ function doSmoothReset( ){
     // if the reset values are reached, exit smooth reset
     if(alpha == original_azimuth){
         smoothReset=false
-        controls.minAzimuthAngle = original_azimuth_min
-        controls.maxAzimuthAngle = original_azimuth_max
     }
 }
 
@@ -159,6 +156,9 @@ function animate(){
     requestAnimationFrame(animate);
     if(smoothReset){
         doSmoothReset()
+    }else{
+        controls.minAzimuthAngle = original_azimuth_min
+        controls.maxAzimuthAngle = original_azimuth_max
     }
     TWEEN.update()
     if(controls.enableRotate){
@@ -191,9 +191,9 @@ if(ratio<1){
 console.log(FOV)
 
 const camera = new THREE.PerspectiveCamera(FOV,ratio,0.1,1000);
-const initial_camera_x = 40;
-const initial_camera_y = 10;
-const initial_camera_z = 10;
+const initial_camera_x = 8;
+const initial_camera_y = 5;
+const initial_camera_z = 8;
 camera.position.setX(initial_camera_x);
 camera.position.setY(initial_camera_y);
 camera.position.setZ(initial_camera_z);
@@ -202,11 +202,11 @@ camera.position.setZ(initial_camera_z);
 // LOAD SCENE
 
 var room_url = require("url:../static/models/room.glb");
-var material_url = require("url:../static/materials/room.mtl");
 //var room = load_OBJ(room_url,material_url);
 var room = load_GLTF(room_url);
-room.scale.set(10,10,10);
-room.rotateY(-Math.PI/7);
+//room.scale.set(2,2,2);
+room.rotateY(1.5);
+room.position.setY(-3);
 scene.add(room);
 
 var background = new THREE.Mesh(
@@ -220,42 +220,29 @@ scene.add( background );
 
 //LIGHTNING
 
-const pointLight1 = new THREE.PointLight( 0x03fcfc, 60, 5 );
-pointLight1.position.set( -5, -1, -3 );
-pointLight1.castShadow = true;
-pointLight1.shadow.bias=-0.04;
-scene.add( pointLight1 )
+//const pointLight1 = new THREE.PointLight( 0x03fcfc, 60, 5 );
+//pointLight1.position.set( -5, -1, -3 );
+//pointLight1.castShadow = true;
+//pointLight1.shadow.bias=-0.04;
+//scene.add( pointLight1 )
 
-let d = 150
 const directionalLight1 = new THREE.DirectionalLight( 0xffffff, 1 );
-
 directionalLight1.position.set( 0, 100, -90 );
-directionalLight1.castShadow = true;
-directionalLight1.shadow.bias=-0.004;
-directionalLight1.shadow.camera.left = -d;
-directionalLight1.shadow.camera.right = d;
-directionalLight1.shadow.camera.top = d;
-directionalLight1.shadow.camera.bottom = -d;
 
 const directionalLight2 = new THREE.DirectionalLight( 0xffffff, 0.5 );
 directionalLight2.position.set( 20, 100, 60 );
-directionalLight2.castShadow = true;
-directionalLight2.shadow.bias=-0.004;
-directionalLight2.shadow.camera.left = -d;
-directionalLight2.shadow.camera.right = d;
-directionalLight2.shadow.camera.top = d;
-directionalLight2.shadow.camera.bottom = -d;
 
 const directionalLight3 = new THREE.DirectionalLight( 0xffffff, 0.5 );
 directionalLight3.position.set( 60, 60, 0 );
-directionalLight3.castShadow = true;
-directionalLight3.shadow.bias=-0.004;
-directionalLight3.shadow.camera.left = -d;
-directionalLight3.shadow.camera.right = d;
-directionalLight3.shadow.camera.top = d;
-directionalLight3.shadow.camera.bottom = -d;
+//let d = 150
+//directionalLight3.castShadow = true;
+//directionalLight3.shadow.bias=-0.004;
+//directionalLight3.shadow.camera.left = -d;
+//directionalLight3.shadow.camera.right = d;
+//directionalLight3.shadow.camera.top = d;
+//directionalLight3.shadow.camera.bottom = -d;
 
-scene.add(pointLight1,directionalLight1,directionalLight2,directionalLight3);
+scene.add(directionalLight1,directionalLight2,directionalLight3);
 
 //const pointLightHelper1 = new THREE.PointLightHelper( pointLight1 );
 //pointLight1.add(pointLightHelper1);
@@ -267,9 +254,10 @@ scene.add(pointLight1,directionalLight1,directionalLight2,directionalLight3);
 //directionalLight3.add( lightHelper3 );
 
 const controls = new OrbitControls( camera, renderer.domElement );
-const original_azimuth_min = Math.PI / 4
-const original_azimuth_max = Math.PI/1.1
 const original_azimuth = controls.getAzimuthalAngle()
+const original_azimuth_min = original_azimuth-1.2
+const original_azimuth_max = original_azimuth+1.2
+console.log(original_azimuth)
 controls.minAzimuthAngle = original_azimuth_min;
 controls.maxAzimuthAngle = original_azimuth_max;  
 controls.minPolarAngle = Math.PI/2.5;
