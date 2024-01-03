@@ -231,8 +231,8 @@ scene.add( background );
 
 const geometry = new THREE.BoxGeometry(0.05, 0.05, 0.05);
 const material = new THREE.MeshStandardMaterial({
-    color: 0x016e6e,
-    emissive: 0x016e6e
+    color: 0x00ffd9,
+    emissive: 0x00ffd9
 })
 var num_stars = 500
 var stars = Array(num_stars).fill().map(()=>{
