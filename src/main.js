@@ -87,7 +87,6 @@ window.onresize = function onWindowResize() {
         FOV = 100;
     }
 
-    console.log(FOV)
 	camera.aspect = ratio;
     camera.fov = FOV
 	camera.updateProjectionMatrix();
@@ -137,11 +136,11 @@ window.goLocation = function goLocation(location){
         },
         1000
         ).easing(TWEEN.Easing.Cubic.Out).start()
-   
+    controls.update();
 }
 
-window.goHome = function goHome(){
-    controls.enableRotate= true;  
+window.goHome = function goHome(){ 
+    controls.enableRotate=true
     new TWEEN.Tween(camera.position)
         .to({
             x: 6,
@@ -152,9 +151,28 @@ window.goHome = function goHome(){
         ).easing(TWEEN.Easing.Cubic.Out).start()
 }
 
+
+
+
 // Animation loop
 function animate(){
     requestAnimationFrame(animate);
+
+    //stars
+    stars.forEach((star,index)=>{
+        star.position.x+=momentum[index][0]
+        star.position.y+=momentum[index][1]
+        star.position.z+=momentum[index][2]
+        if(Math.abs(star.position.x)>15 ||
+            Math.abs(star.position.y)>15 ||
+            Math.abs(star.position.z)>15){
+                momentum[index][0]=-momentum[index][0]
+                momentum[index][1]=-momentum[index][1]
+                momentum[index][2]=-momentum[index][2]
+            }
+    })
+
+    //camera
     if(smoothReset){
         doSmoothReset()
     }else{
@@ -165,6 +183,7 @@ function animate(){
     if(controls.enableRotate){
         controls.update();
     }
+
     renderer.render(scene, camera);
 }
 
@@ -188,13 +207,10 @@ if(ratio<1){
     FOV = 100;
 }
 
-console.log(FOV)
-
 const camera = new THREE.PerspectiveCamera(FOV,ratio,0.1,1000);
 camera.position.setX(6);
 camera.position.setY(6);
 camera.position.setZ(6);
-
 
 // LOAD SCENE
 
@@ -212,6 +228,28 @@ new THREE.MeshLambertMaterial( {
     } )
 );	
 scene.add( background );
+
+const geometry = new THREE.BoxGeometry(0.05, 0.05, 0.05);
+const material = new THREE.MeshStandardMaterial({
+    color: 0x016e6e,
+    emissive: 0x016e6e
+})
+var num_stars = 500
+var stars = Array(num_stars).fill().map(()=>{
+    const star = new THREE.Mesh(geometry,material);
+    const [x,y,z] = Array(3).fill().map(()=>
+        THREE.MathUtils.randFloatSpread(30)
+    );
+
+    star.position.set(x,y,z);
+    scene.add(star)
+    return star
+})
+
+var momentum = Array(num_stars).fill().map(()=>
+    Array(3).fill().map(()=>
+        THREE.MathUtils.randFloatSpread(0.01))
+)
 
 //LIGHTNING
 
@@ -252,7 +290,6 @@ const controls = new OrbitControls( camera, renderer.domElement );
 const original_azimuth = controls.getAzimuthalAngle()
 const original_azimuth_min = original_azimuth-1.2
 const original_azimuth_max = original_azimuth+1.2
-console.log(original_azimuth)
 controls.minAzimuthAngle = original_azimuth_min;
 controls.maxAzimuthAngle = original_azimuth_max;  
 controls.minPolarAngle = Math.PI/2.5;
