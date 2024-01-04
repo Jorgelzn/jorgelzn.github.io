@@ -102,8 +102,8 @@ const mouse = new THREE.Vector2()
 function raycast(e,object){
     mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1)
     raycaster.setFromCamera(mouse, camera)
-    intersects = raycaster.intersectObjects(scene.children, true)
-    hit = false
+    const intersects = raycaster.intersectObjects(scene.children, true)
+    var hit = false
     object.traverse((element)=>{
         if(intersects[0].object.uuid == element.uuid){
             hit=true
