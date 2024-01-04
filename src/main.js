@@ -97,6 +97,70 @@ window.onresize = function onWindowResize() {
 }
 
 
+const raycaster = new THREE.Raycaster()
+const mouse = new THREE.Vector2()
+function raycast(e,object){
+    mouse.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1)
+    raycaster.setFromCamera(mouse, camera)
+    intersects = raycaster.intersectObjects(scene.children, true)
+    hit = false
+    object.traverse((element)=>{
+        if(intersects[0].object.uuid == element.uuid){
+            hit=true
+        }
+    })
+    return hit
+}
+
+function bringObject(e,object,name){
+    if(raycast(e,object) && !controls.enableRotate){
+        new TWEEN.Tween(object.position)
+        .to({
+            x: object.position.x,
+            y: object.position.y+0.8,
+            z: object.position.z+0.4,
+        },
+        1000
+        ).easing(TWEEN.Easing.Cubic.Out).start()
+
+    new TWEEN.Tween(object.rotation)
+        .to({
+            x: object.rotation.x+0.5,
+            y: object.rotation.y,
+            z: object.rotation.z,
+        },
+        1000
+        ).easing(TWEEN.Easing.Cubic.Out).start()
+    setTimeout(() =>{document.getElementById(name).style.display = "flex"}, 1000)
+    }
+}
+
+var tween_lock = false
+function jumpObject(e,object){
+    if(raycast(e,object) && !controls.enableRotate && !tween_lock){
+        tween_lock=true
+        var tween1 = new TWEEN.Tween(object.position).to({
+            x: object.position.x,
+            y: object.position.y+0.1,
+            z: object.position.z,
+        },100)
+        var tween2 = new TWEEN.Tween(object.position).to({
+            x: object.position.x,
+            y: object.position.y,
+            z: object.position.z,
+        },100)
+        tween1.chain( tween2 );
+        tween1.start();
+    }
+    if(!raycast(e,object)){
+        tween_lock=false
+    }
+}
+
+window.addEventListener('click', (e) => bringObject(e,book,'writing'))
+window.addEventListener('pointermove', (e) => jumpObject(e,book))
+
+
 function doSmoothReset( ){
     // get current angles
     var alpha = controls.getAzimuthalAngle()
@@ -117,8 +181,13 @@ function doSmoothReset( ){
 }
 
 
-window.goLocation = function goLocation(location){
-    controls.enableRotate= false;  
+window.goLocation = function goLocation(location,name){
+    controls.enableRotate = false;
+    sections.forEach((element)=>{
+        if(element!=name){
+            document.getElementById(element).style.display = "none"
+        }
+    })
     new TWEEN.Tween(camera.position)
         .to({
             x: location[0],
@@ -149,6 +218,9 @@ window.goHome = function goHome(){
         },
         1000
         ).easing(TWEEN.Easing.Cubic.Out).start()
+    sections.forEach((element)=>{
+        document.getElementById(element).style.display = "none"
+    })
 }
 
 
@@ -188,7 +260,7 @@ function animate(){
 }
 
 const scene = new THREE.Scene();
-
+const sections = ['coding','writing','research']
 //RENDERER
 
 const renderer = new THREE.WebGLRenderer({
@@ -215,10 +287,20 @@ camera.position.setZ(6);
 // LOAD SCENE
 
 var room_url = require("url:../static/models/room.glb");
+var book_url = require("url:../static/models/pokedex.glb");
 var room = load_GLTF(room_url);
 room.rotateY(1.5);
 room.position.setY(-3);
 scene.add(room);
+
+var book = load_GLTF(book_url);
+book.position.setY(-2.2);
+book.position.setX(2.4);
+book.position.setZ(-1.6);
+book.rotateY(-0.8);
+book.rotateZ(-0.3);
+scene.add(book);
+//document.addEventListener('mousedown', (e)=>onMouseDown(e,book,10), false);
 
 var background = new THREE.Mesh(
     new THREE.SphereGeometry(50),

@@ -12,10 +12,13 @@
 		<main>
 			<div class="nav-panel">
 				<button onclick="goHome()">Home</button>
-				<button onclick="goLocation([-0.8,-0.5,1.2,0,0.8,0])">Coding</button>
-				<button onclick="goLocation([2.5,-1,-1.0,-1.0,0,0])"">Writing</button>
-				<button onclick="goLocation([-0.8,-0.5,-1.5,-0.5,-0.1,0])">Research</button>
+				<button onclick="goLocation([-0.8,-0.5,1.2,0,0.8,0],'coding')">Coding</button>
+				<button onclick="goLocation([2.5,-1,-1.0,-1.0,0,0],'writing')"">Writing</button>
+				<button onclick="goLocation([-0.8,-0.5,-1.5,-0.5,-0.1,0],'research')">Research</button>
 			</div>
+			<div class="section" id="coding">coding</div>
+			<div class="section" id="writing">writing</div>
+			<div class="section" id="research">research</div>
 		</main>
 		<script type="module" src="./main.js"></script>
 	</body>
