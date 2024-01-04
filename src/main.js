@@ -287,7 +287,7 @@ camera.position.setZ(6);
 // LOAD SCENE
 
 var room_url = require("url:../static/models/room.glb");
-var book_url = require("url:../static/models/pokedex.glb");
+var book_url = require("url:../static/models/book.glb");
 var room = load_GLTF(room_url);
 room.rotateY(1.5);
 room.position.setY(-3);
