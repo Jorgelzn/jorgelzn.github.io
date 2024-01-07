@@ -133,61 +133,69 @@ function doSmoothReset( ){
     }
 }
 
-
+var animLock = false
 window.goLocation = function goLocation(location,name){
     controls.enableRotate = false;
-    if(actual_section!="home"){
-        document.getElementById(actual_section).style.display = "none"
-        var restore_object = section_objects.find((element)=>{return element.section==actual_section})
-        new TWEEN.Tween(restore_object.position).to({
-            x: restore_object.position.x,
-            y: restore_object.position.y-0.8,
-            z: restore_object.position.z-0.4,
-        },1000).easing(TWEEN.Easing.Cubic.Out).onStart(
-            () => {new TWEEN.Tween(restore_object.rotation).to({
-                x: restore_object.rotation.x-0.5,
-                y: restore_object.rotation.y,
-                z: restore_object.rotation.z,
-            },1000).easing(TWEEN.Easing.Cubic.Out).start()
-            }
-        ).start()
-    }
-    actual_section = name
-    var object = section_objects.find((element)=>{return element.section==actual_section})
-    const goAnim = new TWEEN.Tween(camera.position).to({
-            x: location[0],
-            y: location[1],
-            z: location[2],
-        },1000).easing(TWEEN.Easing.Cubic.Out).onStart(
-            () => {new TWEEN.Tween(camera.rotation).to({
-            x: location[3],
-            y: location[4],
-            z: location[5],
-            },1000).easing(TWEEN.Easing.Cubic.Out).start()
-            }
-        )
+    if(!animLock && actual_section!=name){
+        animLock=true
+        if(actual_section!="home"){
+            animLock = true
+            document.getElementById(actual_section).style.display = "none"
+            var restore_object = section_objects.find((element)=>{return element.section==actual_section})
+            new TWEEN.Tween(restore_object.position).to({
+                x: restore_object.position.x,
+                y: restore_object.position.y-0.8,
+                z: restore_object.position.z-0.4,
+            },1000).easing(TWEEN.Easing.Cubic.Out).onStart(
+                () => {new TWEEN.Tween(restore_object.rotation).to({
+                    x: restore_object.rotation.x-0.5,
+                    y: restore_object.rotation.y,
+                    z: restore_object.rotation.z,
+                },1000).easing(TWEEN.Easing.Cubic.Out).start()
+                }
+            ).start()
+        }
+        actual_section = name
+        var object = section_objects.find((element)=>{return element.section==actual_section})
+        const goAnim = new TWEEN.Tween(camera.position).to({
+                x: location[0],
+                y: location[1],
+                z: location[2],
+            },1000).easing(TWEEN.Easing.Cubic.Out).onStart(
+                () => {new TWEEN.Tween(camera.rotation).to({
+                x: location[3],
+                y: location[4],
+                z: location[5],
+                },1000).easing(TWEEN.Easing.Cubic.Out).start()
+                }
+            )
 
-    const bringObject = new TWEEN.Tween(object.position).to({
-            x: object.position.x,
-            y: object.position.y+0.8,
-            z: object.position.z+0.4,
-        },1000).easing(TWEEN.Easing.Cubic.Out).onStart(
-            () => {new TWEEN.Tween(object.rotation).to({
-                x: object.rotation.x+0.5,
-                y: object.rotation.y,
-                z: object.rotation.z,
-            },1000).easing(TWEEN.Easing.Cubic.Out).start()
-            }
-        )
-    
-    bringObject.onComplete(()=>{document.getElementById(actual_section).style.display = "flex"})
-    goAnim.chain(bringObject)
-    goAnim.start()
+        const bringObject = new TWEEN.Tween(object.position).to({
+                x: object.position.x,
+                y: object.position.y+0.8,
+                z: object.position.z+0.4,
+            },1000).easing(TWEEN.Easing.Cubic.Out).onStart(
+                () => {new TWEEN.Tween(object.rotation).to({
+                    x: object.rotation.x+0.5,
+                    y: object.rotation.y,
+                    z: object.rotation.z,
+                },1000).easing(TWEEN.Easing.Cubic.Out).start()
+                }
+            )
+        
+        bringObject.onComplete(()=>{
+            animLock=false
+            document.getElementById(actual_section).style.display = "flex"
+        })
+        goAnim.chain(bringObject)
+        goAnim.start()
+    }
 }
 
 window.goHome = function goHome(){ 
-    //controls.enableRotate=true
-    if(actual_section!="home"){
+    controls.enableRotate=true
+    if(!animLock && actual_section!="home"){
+        animLock=true
         document.getElementById(actual_section).style.display = "none"
         var restore_object = section_objects.find((element)=>{return element.section==actual_section})
         new TWEEN.Tween(restore_object.position).to({
@@ -214,7 +222,7 @@ window.goHome = function goHome(){
                     z: 0.5235987755982985,
                     },1000).easing(TWEEN.Easing.Cubic.Out).start()
                     }
-            ).onComplete(()=>{controls.enableRotate=true}).start()
+            ).onComplete(()=>{animLock=false}).start()
     }
 }
 
@@ -393,7 +401,6 @@ controls.rotateSpeed = 0.2;
 controls.enableZoom = false;
 controls.enablePan = false;
 controls.enableRotate= true; 
-console.log(camera.rotation)
 var smoothReset = false;
 controls.addEventListener( 'end', function(){smoothReset=true;} );
 
