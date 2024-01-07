@@ -136,13 +136,24 @@ function doSmoothReset( ){
 
 window.goLocation = function goLocation(location,name){
     controls.enableRotate = false;
-    var object = section_objects.find((element)=>{return element.section=name})
-    sections.forEach((element)=>{
-        console.log(name)
-        if(element!=name){
-            document.getElementById(element).style.display = "none"
-        }
-    })
+    if(actual_section!="home"){
+        document.getElementById(actual_section).style.display = "none"
+        var restore_object = section_objects.find((element)=>{return element.section==actual_section})
+        new TWEEN.Tween(restore_object.position).to({
+            x: restore_object.position.x,
+            y: restore_object.position.y-0.8,
+            z: restore_object.position.z-0.4,
+        },1000).easing(TWEEN.Easing.Cubic.Out).onStart(
+            () => {new TWEEN.Tween(restore_object.rotation).to({
+                x: restore_object.rotation.x-0.5,
+                y: restore_object.rotation.y,
+                z: restore_object.rotation.z,
+            },1000).easing(TWEEN.Easing.Cubic.Out).start()
+            }
+        ).start()
+    }
+    actual_section = name
+    var object = section_objects.find((element)=>{return element.section==actual_section})
     const goAnim = new TWEEN.Tween(camera.position).to({
             x: location[0],
             y: location[1],
@@ -168,24 +179,43 @@ window.goLocation = function goLocation(location,name){
             },1000).easing(TWEEN.Easing.Cubic.Out).start()
             }
         )
-    bringObject.onComplete(()=>{document.getElementById(object.section).style.display = "flex"})
+    
+    bringObject.onComplete(()=>{document.getElementById(actual_section).style.display = "flex"})
     goAnim.chain(bringObject)
     goAnim.start()
 }
 
 window.goHome = function goHome(){ 
-    controls.enableRotate=true
-    new TWEEN.Tween(camera.position)
-        .to({
-            x: 6,
-            y: 6,
-            z: 6,
-        },
-        1000
-        ).easing(TWEEN.Easing.Cubic.Out).start()
-    sections.forEach((element)=>{
-        document.getElementById(element).style.display = "none"
-    })
+    //controls.enableRotate=true
+    if(actual_section!="home"){
+        document.getElementById(actual_section).style.display = "none"
+        var restore_object = section_objects.find((element)=>{return element.section==actual_section})
+        new TWEEN.Tween(restore_object.position).to({
+            x: restore_object.position.x,
+            y: restore_object.position.y-0.8,
+            z: restore_object.position.z-0.4,
+        },1000).easing(TWEEN.Easing.Cubic.Out).onStart(
+            () => {new TWEEN.Tween(restore_object.rotation).to({
+                x: restore_object.rotation.x-0.5,
+                y: restore_object.rotation.y,
+                z: restore_object.rotation.z,
+            },1000).easing(TWEEN.Easing.Cubic.Out).start()
+            }
+        ).start()
+        actual_section = "home"
+        new TWEEN.Tween(camera.position).to({
+                x: 6,
+                y: 6,
+                z: 6,
+            },1000).easing(TWEEN.Easing.Cubic.Out).onStart(
+                ()=> {new TWEEN.Tween(camera.rotation).to({
+                    x: -0.785398163397448,
+                    y: 0.6154797086703871,
+                    z: 0.5235987755982985,
+                    },1000).easing(TWEEN.Easing.Cubic.Out).start()
+                    }
+            ).onComplete(()=>{controls.enableRotate=true}).start()
+    }
 }
 
 
@@ -225,7 +255,7 @@ function animate(){
 }
 
 const scene = new THREE.Scene();
-const sections = ["writing","coding","research"]
+var actual_section="home";
 //RENDERER
 
 const renderer = new THREE.WebGLRenderer({
@@ -250,28 +280,42 @@ camera.position.setY(6);
 camera.position.setZ(6);
 
 // LOAD SCENE
+var section_objects = []
 
 var room_url = require("url:../static/models/room.glb");
-var book_url = require("url:../static/models/book.glb");
 var room = load_GLTF(room_url);
 room.rotateY(1.5);
 room.position.setY(-3);
 scene.add(room);
 
-var section_objects = []
-
+var book_url = require("url:../static/models/book.glb");
 var book = load_GLTF(book_url);
 book.position.setY(-2.2);
 book.position.setX(2.4);
 book.position.setZ(-1.6);
 book.rotateY(-0.8);
 book.rotateZ(-0.3);
-book.onfront = false;
-book.hover = false;
 book.section = "writing"
 section_objects.push(book)
-scene.add(book);
 
+var book_placeholder1 = load_GLTF(book_url);
+book_placeholder1.position.setY(-2.2);
+book_placeholder1.position.setX(2.4);
+book_placeholder1.position.setZ(-1.6);
+book_placeholder1.rotateY(-0.8);
+book_placeholder1.rotateZ(-0.3);
+book_placeholder1.section = "coding"
+section_objects.push(book_placeholder1)
+
+var book_placeholder2 = load_GLTF(book_url);
+book_placeholder2.position.setY(-2.2);
+book_placeholder2.position.setX(2.4);
+book_placeholder2.position.setZ(-1.6);
+book_placeholder2.rotateY(-0.8);
+book_placeholder2.rotateZ(-0.3);
+book_placeholder2.section = "research"
+section_objects.push(book_placeholder2)
+scene.add(room,book,book_placeholder1,book_placeholder2);
 //document.addEventListener('mousedown', (e)=>onMouseDown(e,book,10), false);
 
 var background = new THREE.Mesh(
@@ -348,7 +392,8 @@ controls.maxPolarAngle = Math.PI/2.5;
 controls.rotateSpeed = 0.2;
 controls.enableZoom = false;
 controls.enablePan = false;
-controls.enableRotate= true;  
+controls.enableRotate= true; 
+console.log(camera.rotation)
 var smoothReset = false;
 controls.addEventListener( 'end', function(){smoothReset=true;} );
 
