@@ -193,8 +193,8 @@ window.goLocation = function goLocation(location,name){
 }
 
 window.goHome = function goHome(){ 
-    controls.enableRotate=true
     if(!animLock && actual_section!="home"){
+        controls.enableRotate=true
         animLock=true
         document.getElementById(actual_section).style.display = "none"
         var restore_object = section_objects.find((element)=>{return element.section==actual_section})
