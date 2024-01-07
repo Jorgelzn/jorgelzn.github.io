@@ -112,53 +112,6 @@ function raycast(e,object){
     return hit
 }
 
-function bringObject(e,object,name){
-    if(raycast(e,object) && !controls.enableRotate){
-        new TWEEN.Tween(object.position)
-        .to({
-            x: object.position.x,
-            y: object.position.y+0.8,
-            z: object.position.z+0.4,
-        },
-        1000
-        ).easing(TWEEN.Easing.Cubic.Out).start()
-
-    new TWEEN.Tween(object.rotation)
-        .to({
-            x: object.rotation.x+0.5,
-            y: object.rotation.y,
-            z: object.rotation.z,
-        },
-        1000
-        ).easing(TWEEN.Easing.Cubic.Out).start()
-    setTimeout(() =>{document.getElementById(name).style.display = "flex"}, 1000)
-    }
-}
-
-var tween_lock = false
-function jumpObject(e,object){
-    if(raycast(e,object) && !controls.enableRotate && !tween_lock){
-        tween_lock=true
-        var tween1 = new TWEEN.Tween(object.position).to({
-            x: object.position.x,
-            y: object.position.y+0.1,
-            z: object.position.z,
-        },100)
-        var tween2 = new TWEEN.Tween(object.position).to({
-            x: object.position.x,
-            y: object.position.y,
-            z: object.position.z,
-        },100)
-        tween1.chain( tween2 );
-        tween1.start();
-    }
-    if(!raycast(e,object)){
-        tween_lock=false
-    }
-}
-
-window.addEventListener('click', (e) => bringObject(e,book,'writing'))
-window.addEventListener('pointermove', (e) => jumpObject(e,book))
 
 
 function doSmoothReset( ){
@@ -183,29 +136,41 @@ function doSmoothReset( ){
 
 window.goLocation = function goLocation(location,name){
     controls.enableRotate = false;
+    var object = section_objects.find((element)=>{return element.section=name})
     sections.forEach((element)=>{
+        console.log(name)
         if(element!=name){
             document.getElementById(element).style.display = "none"
         }
     })
-    new TWEEN.Tween(camera.position)
-        .to({
+    const goAnim = new TWEEN.Tween(camera.position).to({
             x: location[0],
             y: location[1],
             z: location[2],
-        },
-        1000
-        ).easing(TWEEN.Easing.Cubic.Out).start()
-
-    new TWEEN.Tween(camera.rotation)
-        .to({
+        },1000).easing(TWEEN.Easing.Cubic.Out).onStart(
+            () => {new TWEEN.Tween(camera.rotation).to({
             x: location[3],
             y: location[4],
             z: location[5],
-        },
-        1000
-        ).easing(TWEEN.Easing.Cubic.Out).start()
-    controls.update();
+            },1000).easing(TWEEN.Easing.Cubic.Out).start()
+            }
+        )
+
+    const bringObject = new TWEEN.Tween(object.position).to({
+            x: object.position.x,
+            y: object.position.y+0.8,
+            z: object.position.z+0.4,
+        },1000).easing(TWEEN.Easing.Cubic.Out).onStart(
+            () => {new TWEEN.Tween(object.rotation).to({
+                x: object.rotation.x+0.5,
+                y: object.rotation.y,
+                z: object.rotation.z,
+            },1000).easing(TWEEN.Easing.Cubic.Out).start()
+            }
+        )
+    bringObject.onComplete(()=>{document.getElementById(object.section).style.display = "flex"})
+    goAnim.chain(bringObject)
+    goAnim.start()
 }
 
 window.goHome = function goHome(){ 
@@ -231,16 +196,16 @@ function animate(){
     requestAnimationFrame(animate);
 
     //stars
-    stars.forEach((star,index)=>{
-        star.position.x+=momentum[index][0]
-        star.position.y+=momentum[index][1]
-        star.position.z+=momentum[index][2]
+    stars.forEach((star)=>{
+        star.position.x+=star.momentum[0]
+        star.position.y+=star.momentum[1]
+        star.position.z+=star.momentum[2]
         if(Math.abs(star.position.x)>15 ||
             Math.abs(star.position.y)>15 ||
             Math.abs(star.position.z)>15){
-                momentum[index][0]=-momentum[index][0]
-                momentum[index][1]=-momentum[index][1]
-                momentum[index][2]=-momentum[index][2]
+                star.momentum[0]=-star.momentum[0]
+                star.momentum[1]=-star.momentum[1]
+                star.momentum[2]=-star.momentum[2]
             }
     })
 
@@ -260,7 +225,7 @@ function animate(){
 }
 
 const scene = new THREE.Scene();
-const sections = ['coding','writing','research']
+const sections = ["writing","coding","research"]
 //RENDERER
 
 const renderer = new THREE.WebGLRenderer({
@@ -293,13 +258,20 @@ room.rotateY(1.5);
 room.position.setY(-3);
 scene.add(room);
 
+var section_objects = []
+
 var book = load_GLTF(book_url);
 book.position.setY(-2.2);
 book.position.setX(2.4);
 book.position.setZ(-1.6);
 book.rotateY(-0.8);
 book.rotateZ(-0.3);
+book.onfront = false;
+book.hover = false;
+book.section = "writing"
+section_objects.push(book)
 scene.add(book);
+
 //document.addEventListener('mousedown', (e)=>onMouseDown(e,book,10), false);
 
 var background = new THREE.Mesh(
@@ -324,14 +296,11 @@ var stars = Array(num_stars).fill().map(()=>{
     );
 
     star.position.set(x,y,z);
+    star.momentum=Array(3).fill().map(()=>THREE.MathUtils.randFloatSpread(0.01))
     scene.add(star)
     return star
 })
 
-var momentum = Array(num_stars).fill().map(()=>
-    Array(3).fill().map(()=>
-        THREE.MathUtils.randFloatSpread(0.01))
-)
 
 //LIGHTNING
 
