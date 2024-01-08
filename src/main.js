@@ -84,7 +84,7 @@ window.onresize = function onWindowResize() {
     var ratio = window.innerWidth/window.innerHeight
     FOV = 75
     if(ratio<1){
-        FOV = 100;
+        FOV = 120;
     }
 
 	camera.aspect = ratio;
@@ -93,7 +93,7 @@ window.onresize = function onWindowResize() {
     goHome()
 	renderer.setSize( window.innerWidth, window.innerHeight );
     controls.update();
-
+    controls.res
 }
 
 
@@ -279,7 +279,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 var ratio = window.innerWidth/window.innerHeight
 var FOV = 75
 if(ratio<1){
-    FOV = 100;
+    FOV = 120;
 }
 
 const camera = new THREE.PerspectiveCamera(FOV,ratio,0.1,1000);
