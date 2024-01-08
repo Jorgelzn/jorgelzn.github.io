@@ -83,7 +83,7 @@ window.onresize = function onWindowResize() {
     
     var ratio = window.innerWidth/window.innerHeight
     FOV = 75
-    if(ratio<1){
+    if(window.innerWidth<540){
         FOV = 120;
     }
 
