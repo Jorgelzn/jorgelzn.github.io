@@ -83,7 +83,7 @@ window.onresize = function onWindowResize() {
     
     var ratio = window.innerWidth/window.innerHeight
     FOV = 75
-    if(window.innerWidth<540){
+    if(window.innerWidth<500){
         FOV = 120;
     }
 
@@ -93,7 +93,6 @@ window.onresize = function onWindowResize() {
     goHome()
 	renderer.setSize( window.innerWidth, window.innerHeight );
     controls.update();
-    controls.res
 }
 
 
@@ -278,7 +277,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 //camera
 var ratio = window.innerWidth/window.innerHeight
 var FOV = 75
-if(ratio<1){
+if(window.innerWidth<500){
     FOV = 120;
 }
 
@@ -402,6 +401,7 @@ controls.enableZoom = false;
 controls.enablePan = false;
 controls.enableRotate= true; 
 var smoothReset = false;
+
 controls.addEventListener( 'end', function(){smoothReset=true;} );
 
 
