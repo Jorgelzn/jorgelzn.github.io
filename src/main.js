@@ -81,9 +81,9 @@ function load_GLTF(model){
 
 window.onresize = function onWindowResize() {
     
-    var ratio = window.innerWidth/window.innerHeight
+    var ratio = document.documentElement.clientWidth/document.documentElement.clientHeight
     FOV = 75
-    if(window.innerWidth<500){
+    if(document.documentElement.clientWidth<500){
         FOV = 120;
     }
 
@@ -275,12 +275,11 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 //camera
-var ratio = window.innerWidth/window.innerHeight
+var ratio = document.documentElement.clientWidth/document.documentElement.clientHeight
 var FOV = 75
-if(window.innerWidth<500){
+if(document.documentElement.clientWidth<500){
     FOV = 120;
 }
-
 const camera = new THREE.PerspectiveCamera(FOV,ratio,0.1,1000);
 camera.position.setX(6);
 camera.position.setY(6);

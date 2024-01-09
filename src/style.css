@@ -59,7 +59,7 @@ border-style: double;
     margin-top: 20px;
 }
 
-@media screen and (max-width: 500px) {
+@media only screen and (max-width: 500px) {
     .nav-panel{
         flex-direction: row;
         width: 100%;
