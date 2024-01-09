@@ -1,7 +1,13 @@
 @font-face {
     font-family: "main-font";
-    src: url("../static/fonts/Orbitron-Regular.ttf");
+    src: url("../static/fonts/Orbitron-ExtraBold.ttf");
 }
+
+@font-face {
+    font-family: "code-font";
+    src: url("../static/fonts/RobotoMono-Bold.ttf");
+}
+
 
 canvas{
     position: fixed;
@@ -38,7 +44,7 @@ main {
 }
 
 .section {
-background-color: rgb(64, 52, 85);
+background-color: rgb(67, 109, 148);
 color: white;
 position: fixed;
 left: 50%;
@@ -52,11 +58,12 @@ align-items: center;
 border-radius: 5px;
 border-color: white;
 border-width: 1px;
-border-style: double;
+border-style: groove;
 }
 
 .section * {
     margin-top: 20px;
+    font-family: "code-font";
 }
 
 @media only screen and (max-width: 500px) {
