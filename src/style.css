@@ -61,7 +61,7 @@ label {
 
 .nav-panel button{
     font-family: "main-font";
-    font-size: 20px;
+    font-size: 1.5rem;
     color: white;
     background: none;
     border: none;
@@ -75,12 +75,12 @@ position: fixed;
 left: 50%;
 top: 50%;
 transform: translate(-50%,-50%);
-width: 300px;
-height: 400px;
+width: 400px;
+height: 300px;
 display:none;
 flex-direction: column;
 align-items: center;
-border-radius: 5px;
+border-radius: 2px;
 border-color: white;
 border-width: 1px;
 border-style: groove;
@@ -91,7 +91,7 @@ border-style: groove;
     font-family: "code-font";
 }
 
-@media (max-width:800px){
+@media (max-width:500px){
     .nav-panel{
         flex-direction: row;
         width: 100%;
@@ -99,8 +99,8 @@ border-style: groove;
         bottom: 2vh;
     }
     .section{
-        width: 150px;
-        height: 200px;
+        width: 300px;
+        height: 400px;
         font-size: 12px;
     }
     .section * {
@@ -108,6 +108,6 @@ border-style: groove;
     }
 
     .nav-panel button{
-        font-size: 10px;
+        font-size: 1rem;
     }
 }
