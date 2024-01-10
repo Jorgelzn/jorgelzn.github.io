@@ -6,7 +6,6 @@ import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import TWEEN from '@tweenjs/tween.js'
 
-
 function load_OBJ(model,material){
     const mtlLoader = new MTLLoader()
     var container = new THREE.Object3D();
@@ -49,11 +48,11 @@ function load_OBJ(model,material){
 
 function load_GLTF(model){
     // Instantiate a loader
-    const loader = new GLTFLoader();
+    //const loader = new GLTFLoader();
     var container = new THREE.Object3D();
 
     // Load a glTF resource
-    loader.load(
+    gltfLoader.load(
         // resource URL
         model,
         // called when the resource is loaded
@@ -260,6 +259,20 @@ function animate(){
 
     renderer.render(scene, camera);
 }
+
+
+const loadingManager = new THREE.LoadingManager();
+const progressBar = document.getElementById('progress-bar');
+loadingManager.onProgress = function(url,loaded,total){
+    progressBar.value = (loaded/total)*100;
+}
+const progressBarContainer = document.querySelector('.progress-bar-container');
+const NavPanel = document.querySelector('.nav-panel');
+loadingManager.onLoad = function(url,loaded,total){
+    progressBarContainer.style.display = 'none'
+    NavPanel.style.display = 'flex'
+}
+const gltfLoader = new GLTFLoader(loadingManager)
 
 const scene = new THREE.Scene();
 var actual_section="home";

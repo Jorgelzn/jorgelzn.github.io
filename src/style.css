@@ -17,11 +17,36 @@ canvas{
 
 main {
     position:absolute;
-    color: white;
+}
+
+.progress-bar-container {
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgb(48, 107, 109);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "main-font";
+}
+
+#progress-bar {
+    width: 30%;
+    margin-top: 0.5%;
+    height: 2%;
+}
+
+label {
+   color: white; 
+   font-size: 2rem;
 }
 
 .nav-panel{
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     position: fixed;
