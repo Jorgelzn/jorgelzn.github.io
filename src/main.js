@@ -42,7 +42,7 @@ function load_GLTF(model){
     // Instantiate a loader
     //const loader = new GLTFLoader();
     var container = new THREE.Object3D();
-    var animations = [];
+    var mixer = new THREE.AnimationMixer();
     // Load a glTF resource
     gltfLoader.load(
         // resource URL
@@ -55,14 +55,12 @@ function load_GLTF(model){
                     child.receiveShadow = true
                 }
             })
-            if(gltf.animations){
-                var mixer = new THREE.AnimationMixer(gltf.scene);
-                const clips = gltf.animations;
-                clips.forEach( function ( clip ) {
+            //test.add(gltf.animations)
+
+            mixer._root = gltf.scene;
+            gltf.animations.forEach( function ( clip ) {
                     mixer.clipAction( clip ).play();
-                } );
-                animations.push(mixer);
-            }
+            } );
             container.add(gltf.scene);
         },
         // called while loading is progressing
@@ -74,7 +72,8 @@ function load_GLTF(model){
             console.log( error );
         }
     );
-    return [container,animations]
+    
+    return [container,mixer]
 }
 
 
@@ -160,9 +159,10 @@ function animate(){
         controls.update();
     }
 
-    fish[1].forEach( function ( mixer ) {
-        mixer.update(0.01);
-    });
+
+    fish[1].update(0.01)
+    //chest[1].update(0.01)
+
 
     renderer.render(scene, camera);
 }
@@ -212,14 +212,14 @@ var room = load_GLTF(room_url)[0];
 room.rotateY(1.5);
 room.position.setY(-3);
 
-var book_url = require("url:../static/models/book.glb");
-var book = load_GLTF(book_url)[0];
-book.position.setY(-2.2);
-book.position.setX(2.4);
-book.position.setZ(-1.6);
-book.rotateY(-0.8);
-book.rotateZ(-0.3);
-book.section = "writing"
+var chest_url = require("url:../static/models/chest.glb");
+var chest = load_GLTF(chest_url);
+chest[0].position.setY(-2.2);
+chest[0].position.setX(2.2);
+chest[0].position.setZ(-0.3);
+chest[0].rotateY(3);
+chest[0].scale.set(1.5,1.5,1.5);
+chest[0].section = "writing"
 
 var fish_url = require("url:../static/models/fish.glb");
 var fish = load_GLTF(fish_url);
@@ -238,7 +238,7 @@ robot.rotateY(-0.8);
 robot.scale.set(0.005,0.005,0.005);
 robot.section = "coding"
 
-scene.add(room,book,fish[0],robot);
+scene.add(room,chest[0],fish[0],robot);
 
 var background = new THREE.Mesh(
     new THREE.SphereGeometry(50),
