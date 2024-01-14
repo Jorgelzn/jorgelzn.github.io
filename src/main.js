@@ -55,7 +55,7 @@ function load_GLTF(model){
                     child.receiveShadow = true
                 }
             })
-            if(gltf.animations.length>0){
+            if(gltf.animations){
                 var mixer = new THREE.AnimationMixer(gltf.scene);
                 const clips = gltf.animations;
                 clips.forEach( function ( clip ) {
@@ -71,7 +71,7 @@ function load_GLTF(model){
         },
         // called when loading has errors
         function ( error ) {
-            console.log( 'An error happened' );
+            console.log( error );
         }
     );
     return [container,animations]
@@ -206,13 +206,11 @@ camera.position.setY(6);
 camera.position.setZ(6);
 
 // LOAD SCENE
-var section_objects = []
 
 var room_url = require("url:../static/models/room.glb");
 var room = load_GLTF(room_url)[0];
 room.rotateY(1.5);
 room.position.setY(-3);
-scene.add(room);
 
 var book_url = require("url:../static/models/book.glb");
 var book = load_GLTF(book_url)[0];
@@ -222,28 +220,25 @@ book.position.setZ(-1.6);
 book.rotateY(-0.8);
 book.rotateZ(-0.3);
 book.section = "writing"
-section_objects.push(book)
 
 var fish_url = require("url:../static/models/fish.glb");
 var fish = load_GLTF(fish_url);
 fish[0].position.setY(-1.15);
 fish[0].position.setX(2);
 fish[0].position.setZ(-3.3);
-//fish.rotateY(-0.8);
-//fish.rotateZ(-0.3);
 fish[0].scale.set(0.03,0.03,0.03);
 fish[0].section = "research"
-section_objects.push(fish[0])
 
-var book_placeholder2 = load_GLTF(book_url)[0];
-book_placeholder2.position.setY(-2.2);
-book_placeholder2.position.setX(2.4);
-book_placeholder2.position.setZ(-1.6);
-book_placeholder2.rotateY(-0.8);
-book_placeholder2.rotateZ(-0.3);
-book_placeholder2.section = "coding"
-section_objects.push(book_placeholder2)
-scene.add(room,book,fish[0],book_placeholder2);
+var robot_url = require("url:../static/models/robot.glb");
+var robot = load_GLTF(robot_url)[0];
+robot.position.setY(-2.5);
+robot.position.setX(-1.8);
+robot.position.setZ(0.8);
+robot.rotateY(-0.8);
+robot.scale.set(0.005,0.005,0.005);
+robot.section = "coding"
+
+scene.add(room,book,fish[0],robot);
 
 var background = new THREE.Mesh(
     new THREE.SphereGeometry(50),
