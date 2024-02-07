@@ -212,15 +212,6 @@ var room = load_GLTF(room_url)[0];
 room.rotateY(1.5);
 room.position.setY(-3);
 
-var chest_url = require("url:../static/models/chest.glb");
-var chest = load_GLTF(chest_url);
-chest[0].position.setY(-2.2);
-chest[0].position.setX(2.2);
-chest[0].position.setZ(-0.3);
-chest[0].rotateY(3);
-chest[0].scale.set(1.5,1.5,1.5);
-chest[0].section = "writing"
-
 var fish_url = require("url:../static/models/fish.glb");
 var fish = load_GLTF(fish_url);
 fish[0].position.setY(-1.15);
@@ -238,7 +229,16 @@ robot.rotateY(-0.8);
 robot.scale.set(0.005,0.005,0.005);
 robot.section = "coding"
 
-scene.add(room,chest[0],fish[0],robot);
+var book_url = require("url:../static/models/book.glb");
+var book = load_GLTF(book_url)[0];
+book.position.setY(-2.2);
+book.position.setX(2.2);
+book.position.setZ(-0.3);
+//book.rotateY(-0.8);
+//book.scale.set(0.005,0.005,0.005);
+book.section = "writing"
+
+scene.add(room,fish[0],book,robot);
 
 var background = new THREE.Mesh(
     new THREE.SphereGeometry(50),
