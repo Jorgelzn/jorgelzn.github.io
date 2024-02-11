@@ -229,16 +229,18 @@ robot.rotateY(-0.8);
 robot.scale.set(0.005,0.005,0.005);
 robot.section = "coding"
 
-var book_url = require("url:../static/models/book.glb");
+var book_url = require("url:../static/models/books.glb");
 var book = load_GLTF(book_url)[0];
-book.position.setY(-2.2);
-book.position.setX(2.2);
-book.position.setZ(-0.3);
-//book.rotateY(-0.8);
-//book.scale.set(0.005,0.005,0.005);
+book.position.setY(-2.12);
+book.position.setX(2.3);
+book.position.setZ(-2);
+//book.rotateX(-1.5);
+book.rotateY(-1.5);
+//book.rotateZ(0.4);
+book.scale.set(0.005,0.005,0.005);
 book.section = "writing"
 
-scene.add(room,fish[0],book,robot);
+scene.add(room,fish[0],robot,book);
 
 var background = new THREE.Mesh(
     new THREE.SphereGeometry(50),
