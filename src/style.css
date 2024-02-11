@@ -19,7 +19,7 @@ main {
     position:absolute;
 }
 
-a{ text-decoration: none;}
+a{ text-decoration: none;color: white;}
 a:visited {color: white;}
 a:active {color:white;}
 
@@ -130,9 +130,6 @@ border-style: groove;
         width: 300px;
         height: 400px;
         font-size: 12px;
-    }
-    .section * {
-        margin-top: 10px;
     }
 
     .nav-panel button{
