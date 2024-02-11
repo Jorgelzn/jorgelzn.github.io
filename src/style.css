@@ -19,6 +19,10 @@ main {
     position:absolute;
 }
 
+a{ text-decoration: none;}
+a:visited {color: white;}
+a:active {color:white;}
+
 .progress-bar-container {
     position: absolute;
     left: 50%;
@@ -69,7 +73,7 @@ label {
 }
 
 .section {
-background-color: rgb(67, 109, 148);
+background-color: rgb(0, 0, 0,0.8);
 color: white;
 position: fixed;
 left: 50%;
@@ -79,15 +83,39 @@ width: 400px;
 height: 300px;
 display:none;
 flex-direction: column;
-align-items: center;
-border-radius: 2px;
-border-color: white;
-border-width: 1px;
+border-radius: 3px;
+border-color: rgb(3, 3, 3);
+border-width: 0.001px;
 border-style: groove;
 }
 
+.section-title{
+    background-color: rgb(87, 127, 139);
+    width: 100%;
+    color: white;
+    margin-top: 0px;
+    font-size: 13px;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+}
+.section-title p{
+    margin-left: 10px;
+}
+
+.section-content{
+    display:flex;
+    flex-direction: column;
+}
+
+.section-content p{
+    margin-left: 20px;
+}
+
+.section-content a :hover{
+    color: #68f8d9;
+}
+
 .section * {
-    margin-top: 20px;
     font-family: "code-font";
 }
 

@@ -218,7 +218,7 @@ fish[0].position.setY(-1.15);
 fish[0].position.setX(2);
 fish[0].position.setZ(-3.3);
 fish[0].scale.set(0.03,0.03,0.03);
-fish[0].section = "research"
+fish[0].section = "profile"
 
 var robot_url = require("url:../static/models/robot.glb");
 var robot = load_GLTF(robot_url)[0];
