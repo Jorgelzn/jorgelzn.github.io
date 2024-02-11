@@ -84,9 +84,10 @@ height: 300px;
 display:none;
 flex-direction: column;
 border-radius: 3px;
-border-color: rgb(3, 3, 3);
-border-width: 0.001px;
+border-color: rgb(255, 255, 255);
+border-width: 0.01px;
 border-style: groove;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .section-title{
@@ -97,6 +98,9 @@ border-style: groove;
     font-size: 13px;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
+    border-color: rgb(255, 255, 255);
+    border-bottom-width: 0.01px;
+    border-bottom-style: groove;
 }
 .section-title p{
     margin-left: 10px;
