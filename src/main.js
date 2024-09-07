@@ -94,12 +94,8 @@ window.onresize = function onWindowResize() {
 var animLock = false
 window.goLocation = function goLocation(location,name){
     if(!animLock && actual_section!=name){
-        if(name=="home"){
-            controls.enableRotate=true
-        }else{
         controls.enableRotate = false;
-        }
-
+        
         animLock=true
         try{
             document.getElementById(actual_section).style.display = "none"
@@ -119,6 +115,9 @@ window.goLocation = function goLocation(location,name){
                 }
             )
             goAnim.onComplete(()=>{
+            if(name=="home"){
+                controls.enableRotate=true
+            }
             animLock=false
             try{
             document.getElementById(actual_section).style.display = "flex"
